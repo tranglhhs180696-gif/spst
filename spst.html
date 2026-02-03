@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE MARX SOURCE | Tập san Triết học Kỹ thuật số</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#0B1120', surface: '#1e293b', primary: '#38bdf8', accent: '#f43f5e', text: '#e2e8f0',
+                        philosophy: { bg: '#F8F6F2', primary: '#1F3D2B' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        code: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .perspective { perspective: 1000px; }
+        .glass { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body x-data="mainApp()" :class="darkMode ? 'dark bg-bg text-text' : 'bg-philosophy-bg text-slate-900'" class="font-sans transition-colors duration-500 overflow-x-hidden">
+
+    <div x-show="lightbox" x-cloak @click="lightbox = false" class="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4 transition-opacity duration-300">
+        <img :src="infographics[activeInfo].url" class="max-w-full max-h-full rounded-lg shadow-2xl border border-white/10">
+        <div class="absolute bottom-10 text-center text-white bg-black/50 p-4 rounded-lg backdrop-blur-md">
+            <h2 class="text-2xl font-serif mb-1" x-text="infographics[activeInfo].title"></h2>
+            <p class="text-xs tracking-widest uppercase opacity-60" x-text="'Độ phân giải 4K • Chương ' + infographics[activeInfo].chapter"></p>
+        </div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-[100] backdrop-blur-md border-b border-gray-200 dark:border-white/5 h-16 flex items-center justify-between px-6 lg:px-12 transition-colors duration-500">
+        <div class="font-code text-xl font-bold tracking-tighter">
+            <span class="text-primary">&lt;</span>E-MARX<span class="text-primary">/&gt;</span>
+        </div>
+        <div class="hidden md:flex gap-8 text-[10px] font-bold tracking-widest uppercase opacity-70">
+            <a href="#hero" class="hover:text-primary transition">Trang chủ</a>
+            <a href="#knowledge" class="hover:text-primary transition">Học thuật</a>
+            <a href="#multimedia" class="hover:text-primary transition">Multimedia</a>
+            <a href="#quiz" class="hover:text-accent transition">Debug Quiz</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button @click="darkMode = !darkMode" class="p-2 rounded-full border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-white/5 transition">
+                <span x-text="darkMode ? '☀️' : '🌙'"></span>
+            </button>
+            <a href="#quiz" class="px-4 py-2 bg-accent text-white rounded-full text-[10px] font-bold hover:scale-105 transition shadow-lg shadow-accent/30">TEST NOW</a>
+        </div>
+    </nav>
+
+    <header id="hero" class="min-h-screen flex items-center justify-center relative pt-16">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.1)_0%,transparent_100%)]"></div>
+        <div class="container mx-auto px-6 text-center z-10">
+            <span class="inline-block mb-4 px-3 py-1 rounded-full border border-accent text-accent text-xs font-bold tracking-widest animate-pulse uppercase italic">Tập san Kỹ thuật số - Nhóm 6 GD1822</span>
+            <h1 class="text-6xl md:text-9xl font-black mb-6 tracking-tighter uppercase" data-aos="zoom-in">
+                MÃ NGUỒN CỦA <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-accent">THỰC TẠI</span>
+            </h1>
+            <p class="text-lg md:text-2xl opacity-70 max-w-3xl mx-auto mb-10 font-serif italic" data-aos="fade-up">
+                "Thế giới không vận động ngẫu nhiên, nó vận động theo những quy luật mà bạn có thể giải mã."
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="#knowledge" class="px-10 py-4 bg-primary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition">TẬP SAN</a>
+                <a href="#multimedia" class="px-10 py-4 border border-gray-400 dark:border-gray-600 rounded-xl font-bold hover:bg-white hover:text-black transition uppercase">XEM INFOGRAPHIC</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-16 bg-gray-100 dark:bg-surface/30 transition-colors duration-500">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
+            <h2 class="font-serif text-3xl mb-6">Lời của Ban Biên Tập</h2>
+            <p class="text-lg leading-relaxed opacity-80">
+                Chào mừng bạn đến với MÃ NGUỒN CỦA THỰC TẠI – nơi kiến thức nghiêm túc kết hợp với ngôn ngữ đời thường.
+            </p>
+        </div>
+    </section>
+
+    <section id="knowledge" class="py-24 container mx-auto px-6">
+        <div class="flex justify-between items-end mb-16 border-b border-gray-200 dark:border-gray-800 pb-8">
+            <h2 class="text-4xl md:text-6xl font-black">Kiến thức <br><span class="text-primary italic">Học thuật</span></h2>
+            <div class="flex gap-2">
+                <button @click="contentMode = 'academic'" :class="contentMode === 'academic' ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-surface'" class="px-6 py-2 rounded-lg text-xs font-bold transition">Hàn lâm</button>
+                <button @click="contentMode = 'genz'" :class="contentMode === 'genz' ? 'bg-accent text-white' : 'bg-gray-200 dark:bg-surface'" class="px-6 py-2 rounded-lg text-xs font-bold transition">Gen Z</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-3 space-y-4">
+                <template x-for="(chapter, index) in chapters" :key="index">
+                    <button @click="activeChapter = index" 
+                            :class="activeChapter === index ? 'border-primary bg-primary/10 text-primary' : 'border-transparent opacity-60'"
+                            class="w-full text-left p-4 border-l-4 transition-all hover:pl-6">
+                        <span class="block text-[10px] font-bold uppercase mb-1" x-text="chapter.shortTitle || 'MODULE ' + (index + 1)"></span>
+                        <span class="font-bold text-sm" x-text="chapter.title.split(':')[1] || chapter.title"></span>
+                    </button>
+                </template>
+            </div>
+
+            <div class="lg:col-span-9 bg-white dark:bg-surface p-8 md:p-12 rounded-3xl shadow-xl transition-all duration-500" data-aos="fade-left">
+                <div x-show="contentMode === 'academic'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+                    <h3 class="font-serif text-3xl mb-6 text-primary" x-text="chapters[activeChapter].title"></h3>
+                    <div class="prose dark:prose-invert max-w-none text-lg leading-relaxed space-y-6">
+                        <div x-html="chapters[activeChapter].academicBody"></div>
+                        
+                        <div class="mt-8 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                             <template x-if="activeChapter === 0">
+                                <div>
+                                    
+                                    <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=1200&auto=format&fit=crop" class="w-full h-64 object-cover" alt="Nguồn gốc triết học">
+                                    <p class="text-center text-xs text-gray-500 py-2 italic">Sơ đồ: Nguồn gốc nhận thức và xã hội của Triết học</p>
+                                </div>
+                             </template>
+                             <template x-if="activeChapter === 1">
+                                <div>
+                                    
+                                    <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1200&auto=format&fit=crop" class="w-full h-64 object-cover" alt="Vật chất và Ý thức">
+                                    <p class="text-center text-xs text-gray-500 py-2 italic">Sơ đồ: Mối quan hệ biện chứng Vật chất - Ý thức</p>
+                                </div>
+                             </template>
+                             <template x-if="activeChapter === 2">
+                                <div>
+                                    
+                                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1200&auto=format&fit=crop" class="w-full h-64 object-cover" alt="Quy luật biện chứng">
+                                    <p class="text-center text-xs text-gray-500 py-2 italic">Mô hình: Quy luật Lượng - Chất và Phủ định của Phủ định</p>
+                                </div>
+                             </template>
+                             <template x-if="activeChapter === 4">
+                                <div>
+                                    
+
+[Image of social structure]
+
+                                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop" class="w-full h-64 object-cover" alt="Cơ sở hạ tầng">
+                                    <p class="text-center text-xs text-gray-500 py-2 italic">Sơ đồ: Cơ sở hạ tầng & Kiến trúc thượng tầng</p>
+                                </div>
+                             </template>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="contentMode === 'genz'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+                    <h3 class="font-code text-3xl mb-6 text-accent uppercase" x-text="chapters[activeChapter].vibeTitle"></h3>
+                    <div class="p-8 bg-accent/5 rounded-2xl border-2 border-dashed border-accent/20">
+                        <p class="text-xl font-medium leading-relaxed" x-html="chapters[activeChapter].vibeBody"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="multimedia" class="py-24 bg-gray-100 dark:bg-bg border-y border-gray-200 dark:border-white/5 transition-colors duration-500">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-black mb-4">Multi <span class="text-accent italic">media</span></h2>
+                <p class="opacity-60 uppercase tracking-widest text-xs font-bold">Podcast & Infographic 4K</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="relative group aspect-video rounded-3xl overflow-hidden bg-black shadow-2xl cursor-zoom-in" @click="lightbox = true">
+                        <img :src="infographics[activeInfo].url" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-700">
+                        <div class="absolute bottom-0 p-8 bg-gradient-to-t from-black to-transparent w-full">
+                            <h4 class="text-white text-2xl font-serif" x-text="infographics[activeInfo].title"></h4>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4">
+                        <template x-for="(img, idx) in infographics" :key="idx">
+                            <button @click="activeInfo = idx" class="w-32 aspect-video rounded-lg overflow-hidden border-2 flex-shrink-0 transition" :class="activeInfo === idx ? 'border-primary' : 'border-transparent opacity-50'">
+                                <img :src="img.url" class="w-full h-full object-cover">
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="bg-philosophy-primary text-white p-8 rounded-3xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest opacity-60 uppercase">PODCAST SỐ 01</span>
+                        <h3 class="text-3xl font-serif mt-2 mb-6">Triết học & Deadline</h3>
+                        <div class="flex items-center gap-4 p-4 bg-white/10 rounded-2xl">
+                            <button @click="playing = !playing" class="w-12 h-12 bg-accent rounded-full flex items-center justify-center hover:scale-110 transition">
+                                <span x-show="!playing">▶</span><span x-show="playing">⏸</span>
+                            </button>
+                            <div class="flex-1">
+                                <div class="h-1 bg-white/20 w-full rounded-full">
+                                    <div class="h-full bg-accent" :style="playing ? 'width: 45%' : 'width: 0%'"></div>
+                                </div>
+                                <div class="flex justify-between text-[10px] mt-1 opacity-60"><span>01:42</span><span>03:45</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm opacity-70 italic mt-6 border-l-2 border-accent pl-4">"Khi quan hệ sản xuất của một dự án khởi nghiệp va chạm với lực lượng sản xuất..."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz" class="py-24 container mx-auto px-6 max-w-3xl" x-data="quizApp()">
+        <div class="bg-white dark:bg-surface p-10 rounded-[3rem] shadow-2xl text-center border border-gray-200 dark:border-white/5 transition-all duration-500">
+            <h2 class="text-4xl font-black mb-8 uppercase">Kiểm tra <span class="text-accent italic">Kiến thức</span></h2>
+            
+            <div x-show="!started && !finished">
+                <p class="mb-10 opacity-70">Bạn là "Nhà biện chứng" hay "Tấm chiếu mới"?</p>
+                <button @click="started = true" class="px-12 py-4 bg-accent text-white font-bold rounded-2xl hover:scale-105 transition shadow-lg shadow-accent/30">BẮT ĐẦU</button>
+            </div>
+
+            <div x-show="started && !finished">
+                <div class="flex justify-between items-center mb-8 font-code text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                    <span class="text-primary" x-text="'Câu hỏi ' + (currentQ + 1) + '/' + questions.length"></span>
+                    <span class="text-accent" x-text="'Điểm: ' + score"></span>
+                </div>
+                <h3 class="text-2xl font-bold mb-10 leading-tight min-h-[80px]" x-text="questions[currentQ].q"></h3>
+                <div class="grid gap-4">
+                    <template x-for="(opt, i) in questions[currentQ].opts" :key="i">
+                        <button @click="answer(i)" class="w-full p-4 text-left rounded-xl border border-gray-200 dark:border-white/10 hover:border-primary hover:bg-primary/5 transition flex items-center gap-4 group">
+                            <span class="w-8 h-8 rounded-full border border-gray-400 group-hover:border-primary flex items-center justify-center text-[10px] font-bold" x-text="String.fromCharCode(65 + i)"></span>
+                            <span x-text="opt"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <div x-show="finished">
+                <div class="text-7xl mb-6 animate-bounce">👑</div>
+                <h3 class="text-3xl font-bold mb-4 uppercase">Hoàn thành!</h3>
+                <p class="text-primary font-bold text-2xl mb-8" x-text="'Kết quả: ' + score + '/' + questions.length"></p>
+                <button @click="reset()" class="px-8 py-3 border border-gray-300 dark:border-white/20 rounded-xl text-xs font-bold hover:bg-gray-100 dark:hover:bg-white/5 transition uppercase">Làm lại</button>
+            </div>
+        </div>
+    </section>
+
+    <div x-data="academicToolkit()" class="fixed bottom-8 right-8 z-[150] flex flex-col items-end gap-3">
+        <div x-show="openTab === 'glossary'" x-transition x-cloak class="w-72 glass p-5 rounded-2xl shadow-2xl mb-2 overflow-hidden bg-white/90 dark:bg-surface/90 backdrop-blur-xl border border-white/20">
+            <h4 class="text-[10px] font-bold text-primary mb-3 uppercase tracking-widest">Từ điển Triết học</h4>
+            <input type="text" x-model="searchQuery" placeholder="Tìm thuật ngữ..." class="w-full bg-gray-100 dark:bg-black/20 p-2 rounded-lg text-xs mb-3 border border-gray-200 dark:border-white/10 focus:ring-1 focus:ring-primary outline-none">
+            <div class="max-h-48 overflow-y-auto space-y-3 no-scrollbar text-left">
+                <template x-for="item in filteredGlossary" :key="item.term">
+                    <div class="border-b border-gray-200 dark:border-white/5 pb-2 last:border-0">
+                        <p class="text-xs font-bold text-accent" x-text="item.term"></p>
+                        <p class="text-[10px] opacity-70 italic" x-text="item.define"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div x-show="openTab === 'citation'" x-transition x-cloak class="w-72 bg-white/90 dark:bg-surface/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-5 mb-2">
+            <h4 class="text-[10px] font-bold text-accent mb-3 uppercase tracking-widest">Trích dẫn nhanh</h4>
+            <div class="bg-gray-100 dark:bg-black/20 p-3 rounded-lg text-[10px] font-mono break-words mb-3 text-left select-all" id="citation-text">
+                Nhóm 6 (2026), "THE MARX SOURCE: Mã nguồn thực tại", Tập san Triết học GD1822, FPT University.
+            </div>
+            <button @click="copyCitation()" class="w-full py-2 bg-accent text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition uppercase">Copy Clipboard</button>
+        </div>
+
+        <div x-show="openTab === 'bookmark'" x-transition x-cloak class="w-72 bg-white/90 dark:bg-surface/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-5 mb-2">
+            <h4 class="text-[10px] font-bold text-gray-500 mb-3 uppercase tracking-widest">Đã lưu</h4>
+            <div class="space-y-2 text-left">
+                <template x-if="bookmarks.length === 0">
+                    <p class="text-[10px] opacity-50 italic">Chưa có bài lưu nào...</p>
+                </template>
+                <template x-for="bm in bookmarks">
+                    <div class="flex justify-between items-center text-[10px] bg-gray-100 dark:bg-black/20 p-2 rounded border border-transparent dark:border-white/5">
+                        <span x-text="bm" class="truncate max-w-[80%]"></span>
+                        <button @click="removeBookmark(bm)" class="text-accent hover:text-red-600">✕</button>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <button @click="toggleTab('glossary')" :class="openTab === 'glossary' ? 'bg-primary text-white scale-110' : 'bg-white dark:bg-surface text-gray-600 dark:text-gray-300'" class="w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border border-gray-200 dark:border-white/10">
+                <span class="text-sm">📖</span>
+            </button>
+            <button @click="toggleTab('citation')" :class="openTab === 'citation' ? 'bg-accent text-white scale-110' : 'bg-white dark:bg-surface text-gray-600 dark:text-gray-300'" class="w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border border-gray-200 dark:border-white/10">
+                <span class="text-sm">📜</span>
+            </button>
+            <button @click="addBookmark()" class="w-10 h-10 bg-white dark:bg-surface text-gray-600 dark:text-gray-300 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 border border-gray-200 dark:border-white/10">
+                <span class="text-sm">🔖</span>
+            </button>
+            <button @click="openTab = openTab ? '' : 'main'" class="w-14 h-14 bg-primary text-white rounded-full shadow-xl shadow-primary/30 flex items-center justify-center text-2xl transition-transform duration-300 hover:rotate-90">
+                <span x-text="openTab ? '✕' : '⚙️'"></span>
+            </button>
+        </div>
+    </div>
+
+    <footer class="py-12 border-t border-gray-200 dark:border-white/5 text-center text-[10px] opacity-50 tracking-widest uppercase font-bold transition-colors duration-500">
+        <p>© 2026 THE MARX SOURCE | FPT UNIVERSITY STUDENT PROJECT</p>
+        <p class="mt-2 text-primary italic underline underline-offset-4">Kiến thức chuẩn • Sáng tạo Gen Z</p>
+    </footer>
+
+    <script>
+        function mainApp() {
+            return {
+                darkMode: true,
+                activeChapter: 0,
+                contentMode: 'academic',
+                activeInfo: 0,
+                lightbox: false,
+                playing: false,
+                infographics: [
+                    
+                    { title: "Biện chứng giữa Lượng và Chất", chapter: "2", url: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1600&q=90" }
+                ],
+                chapters: [
+                    {
+                        title: "Module 1: Nhập môn & Thế giới quan",
+                        shortTitle: "MODULE 1",
+                        vibeTitle: "Hệ điều hành: Manifest hay Cày cuốc?",
+                        academicBody: `
+                            <div class="space-y-3 text-justify text-sm text-gray-700 dark:text-gray-300">
+                                <p><b>1. Nguồn gốc Triết học:</b>
+                                    <br>- <i>Nguồn gốc nhận thức:</i> Nhu cầu tìm hiểu bản chất thế giới, tư duy trừu tượng phát triển.
+                                    <br>- <i>Nguồn gốc xã hội:</i> Phân công lao động (chân tay/trí óc), xuất hiện giai cấp và tư hữu.
+                                </p>
+                                <p><b>2. Vấn đề cơ bản của Triết học:</b> Mối quan hệ giữa Tư duy và Tồn tại (Vật chất & Ý thức).
+                                    <ul class="list-disc ml-5 pl-2 mt-1">
+                                        <li><b>Mặt thứ nhất (Bản thể luận):</b> Cái nào có trước? 
+                                            <br>-> <i>Duy vật:</i> Vật chất có trước. 
+                                            <br>-> <i>Duy tâm:</i> Ý thức có trước.</li>
+                                        <li><b>Mặt thứ hai (Nhận thức luận):</b> Con người có nhận thức được thế giới không? (Khả tri luận & Bất khả tri luận).</li>
+                                    </ul>
+                                </p>
+                                <p><b>3. Vai trò của Triết học Mác - Lênin:</b> Thế giới quan duy vật biện chứng & Phương pháp luận khoa học.</p>
+                            </div>
+                        `,
+                        vibeBody: "Bạn ngồi thiền và <b>'Manifest'</b> vũ trụ gửi tín hiệu qua môn? Đó là <i>Duy tâm</i>. Còn bạn cày nát giáo trình, thức trắng đêm làm Lab? Đó là <i>Duy vật</i>. Vũ trụ chỉ 'Seen' tin nhắn của bạn thôi, muốn qua môn thì phải dùng hành động thực tế (Vật chất) để tác động!"
+                    },
+                    {
+                        title: "Module 2: Vật chất & Ý thức",
+                        shortTitle: "MODULE 2",
+                        vibeTitle: "Cột sống & Tâm linh (Money & Mood)",
+                        academicBody: `
+                            <div class="space-y-3 text-justify text-sm text-gray-700 dark:text-gray-300">
+                                <p><b>1. Vật chất (Định nghĩa Lênin):</b> Là một phạm trù triết học dùng để chỉ <i>thực tại khách quan</i>, được đem lại cho con người trong cảm giác, được cảm giác chép lại, chụp lại, phản ánh và tồn tại không lệ thuộc vào cảm giác.</p>
+                                <p><b>2. Ý thức:</b>
+                                    <br>- <i>Nguồn gốc:</i> Tự nhiên (Bộ não + Sự phản ánh) & Xã hội (Lao động + Ngôn ngữ - Yếu tố quyết định).
+                                    <br>- <i>Bản chất:</i> Hình ảnh chủ quan của thế giới khách quan; mang tính năng động, sáng tạo và bản chất xã hội.
+                                    <br>- <i>Kết cấu:</i> Tri thức, tình cảm, ý chí (trong đó Tri thức là cốt lõi).
+                                </p>
+                                <div class="mt-2 bg-blue-50 dark:bg-blue-900/30 p-3 rounded-md border-l-4 border-blue-500">
+                                    <b>⚡ Mối quan hệ biện chứng:</b>
+                                    <br>- Vật chất quyết định nguồn gốc, nội dung, hình thức của ý thức.
+                                    <br>- Ý thức có tính độc lập tương đối, tác động ngược trở lại vật chất thông qua hoạt động thực tiễn.
+                                </div>
+                            </div>
+                        `,
+                        vibeBody: "Tiếng <b>'Ting ting'</b> (Vật chất) là liều thuốc chữa lành mọi vết thương tâm hồn (Ý thức). Ngược lại, nếu thất tình, mood tụt chạm đáy (Ý thức) thì đố bạn ngồi code hay viết content ra hồn được (tác động trở lại). Đừng để 'cột sống' bất ổn làm 'tâm trí' overthinking!"
+                    },
+                    {
+                        title: "Module 3: 2 Nguyên lý & 3 Quy luật",
+                        shortTitle: "MODULE 3",
+                        vibeTitle: "Thuật toán Drama & Level Up",
+                        academicBody: `
+                            <div class="space-y-3 text-justify text-sm text-gray-700 dark:text-gray-300">
+                                <p><b>1. Hai nguyên lý cơ bản:</b>
+                                    <br>- <i>Mối liên hệ phổ biến:</i> Mọi sự vật đều nằm trong mối liên hệ, ràng buộc (Nguyên tắc toàn diện).
+                                    <br>- <i>Sự phát triển:</i> Khuynh hướng vận động đi lên (Nguyên tắc phát triển, lịch sử - cụ thể).
+                                </p>
+                                <p><b>2. Ba quy luật cốt lõi:</b>
+                                    <ul class="list-decimal ml-5 pl-2 mt-1 space-y-1">
+                                        <li><b>Lượng - Chất:</b> Chỉ ra <i>cách thức</i> vận động. Tích lũy về Lượng (trong độ) -> Điểm nút -> Bước nhảy -> Chất mới ra đời.</li>
+                                        <li><b>Mâu thuẫn:</b> Chỉ ra <i>nguồn gốc, động lực</i>. Sự thống nhất và đấu tranh của các mặt đối lập.</li>
+                                        <li><b>Phủ định của phủ định:</b> Chỉ ra <i>khuynh hướng</i> (hình xoắn ốc). Kế thừa cái cũ trên cơ sở cao hơn.</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        `,
+                        vibeBody: "<b>Mâu thuẫn:</b> Teamwork mà không cãi nhau (Đấu tranh) thì sản phẩm cuối cùng thường 'nhạt như nước ốc'. Drama là động lực phát triển, miễn là đừng 'combat' tới mức tan rã.<br><br><b>Lượng - Chất:</b> Crush vẫn chỉ coi là 'anh trai mưa'? Vì bạn chưa nạp đủ 'Lượng' (sự quan tâm/tinh tế) hoặc nạp sai cách, nên chưa tới 'Điểm nút' để đổi trạng thái quan hệ!"
+                    },
+                    {
+                        title: "Module 4: 6 Cặp phạm trù & Nhận thức",
+                        shortTitle: "MODULE 4",
+                        vibeTitle: "Bộ lọc Anti-Phông bạt",
+                        academicBody: `
+                            <div class="space-y-3 text-justify text-sm text-gray-700 dark:text-gray-300">
+                                <p><b>1. Sáu cặp phạm trù:</b> Cái chung - Cái riêng - Cái đơn nhất; Nguyên nhân - Kết quả; Tất nhiên - Ngẫu nhiên; Nội dung - Hình thức; Bản chất - Hiện tượng; Khả năng - Hiện thực.</p>
+                                <p><b>2. Lý luận nhận thức:</b>
+                                    <br>- <i>Thực tiễn:</i> Hoạt động vật chất có mục đích (Sản xuất vật chất, Chính trị - xã hội, Thực nghiệm khoa học).
+                                    <br>- <i>Vai trò thực tiễn:</i> Cơ sở, động lực, mục đích và tiêu chuẩn kiểm tra chân lý.
+                                    <br>- <i>Quy trình:</i> Từ trực quan sinh động (Cảm tính) -> Tư duy trừu tượng (Lý tính) -> Thực tiễn.
+                                </p>
+                            </div>
+                        `,
+                        vibeBody: "Đừng nhìn Avatar Facebook lung linh (Hình thức) mà vội tin, phải check số dư tài khoản (Nội dung). Đừng thấy 'Chủ tịch giả danh' (Hiện tượng) mà tưởng giàu thật (Bản chất). Học Triết để có đôi mắt <b>'Check VAR'</b>, không bị vẻ bề ngoài hào nhoáng lùa gà."
+                    },
+                    {
+                        title: "Module 5: Hình thái Kinh tế - Xã hội",
+                        shortTitle: "MODULE 5",
+                        vibeTitle: "Luật chơi của Server Trái Đất",
+                        academicBody: `
+                            <div class="space-y-3 text-justify text-sm text-gray-700 dark:text-gray-300">
+                                <p><b>1. Sản xuất vật chất:</b> Nền tảng của sự tồn tại và phát triển xã hội.</p>
+                                <p><b>2. Quy luật về sự phù hợp của QHSX với trình độ LLSX:</b>
+                                    <br>- <i>Lực lượng sản xuất (LLSX):</i> Người lao động + Tư liệu sản xuất (Công cụ là yếu tố động nhất).
+                                    <br>- <i>Quan hệ sản xuất (QHSX):</i> Sở hữu, Tổ chức quản lý, Phân phối.
+                                    <br>-> LLSX quyết định QHSX; QHSX tác động ngược lại.
+                                </p>
+                                <p><b>3. Biện chứng giữa CSHT và KTTT:</b>
+                                    <br>- <i>Cơ sở hạ tầng (CSHT):</i> Toàn bộ quan hệ sản xuất (Kinh tế).
+                                    <br>- <i>Kiến trúc thượng tầng (KTTT):</i> Quan điểm chính trị, pháp quyền, triết học + Thiết chế tương ứng (Nhà nước, Đảng...).
+                                    <br>-> CSHT quyết định KTTT.
+                                </p>
+                            </div>
+                        `,
+                        vibeBody: "Tại sao ví mỏng (Kinh tế/CSHT) thì không thể đòi hỏi lối sống sang chảnh 'chanh sả' (Văn hóa/KTTT)? Tại sao AI ra đời (LLSX phát triển) thì dân Design/Code lo mất việc (QHSX thay đổi)? Hiểu quy luật này để biết: <b>Muốn thay đổi vị thế, hãy nâng cấp công cụ kiếm tiền trước!</b>"
+                    },
+                    {
+                        title: "Module 6: Nhà nước, Giai cấp & Con người",
+                        shortTitle: "MODULE 6",
+                        vibeTitle: "Bạn là ai? (User Profile)",
+                        academicBody: `
+                            <div class="space-y-3 text-justify text-sm text-gray-700 dark:text-gray-300">
+                                <p><b>1. Giai cấp & Nhà nước:</b>
+                                    <br>- <i>Giai cấp:</i> Ra đời do LLSX phát triển và chế độ tư hữu xuất hiện.
+                                    <br>- <i>Nhà nước:</i> Là công cụ bạo lực của giai cấp thống trị, giải quyết mâu thuẫn không thể điều hòa.
+                                </p>
+                                <p><b>2. Tồn tại xã hội & Ý thức xã hội:</b> Tồn tại xã hội (đời sống vật chất) quyết định Ý thức xã hội (đời sống tinh thần). Ý thức xã hội thường lạc hậu hơn nhưng có thể vượt trước.</p>
+                                <div class="mt-2 bg-red-50 dark:bg-red-900/30 p-3 rounded-md border-l-4 border-red-500">
+                                    <b>❤️ Con người:</b> Vừa là thực thể sinh vật, vừa là thực thể xã hội. Trong tính hiện thực, <i>bản chất con người là tổng hòa các mối quan hệ xã hội</i>.
+                                </div>
+                            </div>
+                        `,
+                        vibeBody: "Chơi với 5 'chiến thần' săn học bổng, bạn sẽ là người thứ 6. Chơi với 5 'báo thủ' trốn học, bạn là báo thủ thứ 6. Bạn chính là trung bình cộng của những mối quan hệ xã hội xung quanh. Muốn 'Healing' bản thân? Hãy lọc lại friendlist (Thay đổi Tồn tại xã hội) ngay đi!"
+                    }
+                ]
+            }
+        }
+
+        function quizApp() {
+            return {
+                started: false, finished: false, currentQ: 0, score: 0,
+                questions: [
+                    { q: "Theo CNDV Biện chứng, yếu tố nào quyết định sự hình thành ý thức?", opts: ["Thần linh", "Vật chất", "Ý niệm tuyệt đối", "Ngẫu nhiên"], ans: 1 },
+                    { q: "Muốn thay đổi về Chất, chúng ta cần làm gì với Lượng?", opts: ["Giữ nguyên", "Tích lũy đủ đến Điểm nút", "Giảm bớt đi", "Thay đổi đột ngột"], ans: 1 },
+                    { q: "Bệnh 'Tả khuynh' trong nhận thức và hành động là gì?", opts: ["Bảo thủ, trì trệ", "Nôn nóng, đốt cháy giai đoạn", "Thực tế, khách quan", "Trông chờ ỷ lại"], ans: 1 },
+                    { q: "Theo Lênin, vật chất là...?", opts: ["Cái do ý thức đẻ ra", "Thực tại khách quan", "Phức hợp các cảm giác", "Nguyên tử"], ans: 1 },
+                    { q: "Yếu tố động nhất, cách mạng nhất trong Lực lượng sản xuất là?", opts: ["Công cụ lao động", "Người lao động", "Đối tượng lao động", "Khoa học"], ans: 0 },
+                    { q: "Yếu tố đóng vai trò QUAN TRỌNG NHẤT trong Lực lượng sản xuất là?", opts: ["Công cụ lao động", "Người lao động", "Tư liệu sản xuất", "Khoa học"], ans: 1 },
+                    { q: "Nguồn gốc XÃ HỘI trực tiếp hình thành nên ý thức là?", opts: ["Bộ não người", "Thế giới khách quan", "Lao động và Ngôn ngữ", "Gen di truyền"], ans: 2 },
+                    { q: "Mối liên hệ phổ biến đòi hỏi chúng ta phải có quan điểm gì?", opts: ["Quan điểm toàn diện", "Quan điểm phiến diện", "Quan điểm chiết trung", "Quan điểm ngụy biện"], ans: 0 },
+                    { q: "Phủ định biện chứng có đặc điểm gì nổi bật?", opts: ["Xóa bỏ hoàn toàn cái cũ", "Kế thừa hạt nhân hợp lý của cái cũ", "Lặp lại y nguyên cái cũ", "Phủ định sạch trơn"], ans: 1 },
+                    { q: "Khoảng giới hạn mà Lượng đổi nhưng Chất chưa đổi gọi là gì?", opts: ["Điểm nút", "Bước nhảy", "Độ", "Phủ định"], ans: 2 },
+                    { q: "Sự tác động của Ý thức đối với Vật chất diễn ra thông qua?", opts: ["Hoạt động thực tiễn", "Suy nghĩ trong đầu", "Lời nói suông", "Ước mơ"], ans: 0 }
+                ],
+                answer(i) {
+                    if(i === this.questions[this.currentQ].ans) this.score++;
+                    if(this.currentQ < this.questions.length - 1) this.currentQ++;
+                    else this.finished = true;
+                },
+                reset() { this.started = this.finished = false; this.currentQ = this.score = 0; }
+            }
+        }
+
+        function academicToolkit() {
+            return {
+                openTab: '',
+                searchQuery: '',
+                bookmarks: JSON.parse(localStorage.getItem('marx_bookmarks') || '[]'),
+                glossary: [
+                    { term: 'Biện chứng', define: 'Mối liên hệ, sự vận động và phát triển không ngừng.' },
+                    { term: 'Thực tại khách quan', define: 'Những thứ tồn tại ngoài ý thức, không phụ thuộc con người.' },
+                    { term: 'Phủ định biện chứng', define: 'Sự thay thế cái cũ bằng cái mới nhưng có kế thừa.' },
+                    { term: 'Điểm nút', define: 'Thời điểm mà sự tích lũy về lượng đủ để thay đổi về chất.' },
+                    { term: 'Hình thái KT-XH', define: 'Xã hội ở một giai đoạn lịch sử nhất định với kiểu quan hệ sản xuất đặc trưng.' }
+                ],
+                get filteredGlossary() {
+                    return this.glossary.filter(i => i.term.toLowerCase().includes(this.searchQuery.toLowerCase()));
+                },
+                toggleTab(tab) {
+                    this.openTab = this.openTab === tab ? '' : tab;
+                },
+                copyCitation() {
+                    const text = document.getElementById('citation-text').innerText;
+                    navigator.clipboard.writeText(text);
+                    alert('Đã sao chép trích dẫn chuẩn học thuật!');
+                },
+                addBookmark() {
+                    const currentTitle = document.title;
+                    if (!this.bookmarks.includes(currentTitle)) {
+                        this.bookmarks.push(currentTitle);
+                        localStorage.setItem('marx_bookmarks', JSON.stringify(this.bookmarks));
+                        alert('Đã lưu bài viết này!');
+                    }
+                    this.openTab = 'bookmark';
+                },
+                removeBookmark(bm) {
+                    this.bookmarks = this.bookmarks.filter(i => i !== bm);
+                    localStorage.setItem('marx_bookmarks', JSON.stringify(this.bookmarks));
+                }
+            }
+        }
+        AOS.init();
+    </script>
+</body>
+</html>
+
